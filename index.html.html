@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esploratore di Compatibilità: Stratigrafie Green Roof e Palette Naturalistiche</title>
+    <style>
+        :root {
+            --bg-color: #12141c;
+            --card-bg: #1a1d29;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --status-high: #10b981;
+            --status-medium: #f59e0b;
+            --status-low: #ef4444;
+            --border-color: #2d3142;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        p.subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+
+        /* Form Controls */
+        .control-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .select-input:focus {
+            border-color: var(--accent-green);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: var(--bg-color);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .slider-input {
+            flex-grow: 1;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+        }
+
+        .slider-value {
+            font-size: 16px;
+            font-weight: 700;
+            min-width: 60px;
+            text-align: right;
+            color: var(--accent-green);
+        }
+
+        /* Status & Justification */
+        .status-box {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 5px solid transparent;
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .status-label {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-text {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #e5e7eb;
+        }
+
+        /* Metrics Display */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .metric-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .metric-name {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background-color: #2d3142;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--accent-green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Botanical List */
+        .botanical-card {
+            background-color: rgba(16, 185, 129, 0.03);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .botanical-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 500px) {
+            .botanical-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .botanical-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .botanical-name {
+            font-style: italic;
+            font-weight: 600;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .botanical-type {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        /* Info footnote for PPT */
+        .ppt-info {
+            margin-top: 20px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Esploratore di Compatibilità Stratigrafica</h1>
+        <p class="subtitle">Strumento decisionale per la validazione accademica di Nature-Based Solutions (NBS). Seleziona il pacchetto tecnologico e la palette biologica per verificare la coerenza progettuale, i carichi strutturali e le risposte prestazionali.</p>
+    </header>
+
+    <div class="control-group">
+        <label for="systemSelect">1. Sistema Tecnologico DAKU</label>
+        <select id="systemSelect" class="select-input" onchange="onSystemChange()">
+            <option value="standard">DAKU Estensivo Standard (Spessore di riferimento: 13 cm - Senza irrigazione)</option>
+            <option value="irriga" selected>DAKU Estensivo Irriga (Spessore di riferimento: 16 cm - Sub-irrigazione capillare)</option>
+            <option value="semi">DAKU Semi-Intensivo (Spessore di riferimento: 25 cm - Irrigazione tradizionale)</option>
+        </select>
+    </div>
+
+    <div class="control-group">
+        <label for="thicknessSlider">2. Spessore del Substrato Colturale (cm)</label>
+        <div class="slider-container">
+            <input type="range" id="thicknessSlider" class="slider-input" min="8" max="30" value="16" oninput="onThicknessChange()">
+            <span id="thicknessValue" class="slider-value">16 cm</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="paletteSelect">3. Palette Vegetale Naturalistica</label>
+        <select id="paletteSelect" class="select-input" onchange="updateSimulation()">
+            <option value="sedum">Monocultura a Sedum (Basso spessore, massima rusticità, limitata varietà strutturale)</option>
+            <option value="leggera" selected>Matrice Naturalistica Leggera (Sedum misti, graminacee superficiali, perenni rustiche)</option>
+            <option value="complessa">New Perennial Complesso (Graminacee ornamentali profonde, perenni diversificate, alta complessità)</option>
+        </select>
+    </div>
+
+    <div class="section-title">Validazione Bioclimatica</div>
+    
+    <div id="statusBox" class="status-box">
+        <div class="status-header">
+            <span class="status-label">Compatibilità Biologica</span>
+            <span id="statusBadge" class="status-badge">Alta</span>
+        </div>
+        <p id="statusText" class="status-text">Calcolo in corso...</p>
+    </div>
+
+    <div class="section-title">Indicatori Prestazionali Ambientali</div>
+    
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-name">Carico Strutturale (Max Saturazione)</span>
+                <span id="weightValue" class="metric-value">188 kg/m²</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="weightBar" class="progress-bar-fill" style="background-color: var(--accent-blue);"></div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-name">Ritenzione Idrica Utile (Media Annua)</span>
+                <span id="waterValue" class="metric-value">70%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="waterBar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-name">Mitigazione UHI (Raffrescamento)</span>
+                <span id="uhiValue" class="metric-value">Alto</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="uhiBar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-name">Indice di Biodiversità Autonoma</span>
+                <span id="bioValue" class="metric-value">7/10</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="bioBar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Abbiatamenti Botanici Consigliati per il Setup</div>
+    <div class="botanical-card">
+        <ul id="botanicalList" class="botanical-list">
+            <!-- Populated dynamically -->
+        </ul>
+    </div>
+
+    <div class="ppt-info">
+        💡 Per l'uso in Microsoft PowerPoint: Inserisci tramite l'Add-in "Web Viewer" o utilizza un oggetto Web Browser VBA inserendo il percorso locale di questo file.
+    </div>
+</div>
+
+<script>
+    const systemConfigs = {
+        standard: { defaultThick: 13, minThick: 8, maxThick: 20 },
+        irriga: { defaultThick: 16, minThick: 10, maxThick: 22 },
+        semi: { defaultThick: 25, minThick: 15, maxThick: 30 }
+    };
+
+    const speciesDatabase = {
+        sedum: [
+            { name: "Sedum album", type: "Crassulacea / Tappezzante" },
+            { name: "Sedum acre", type: "Crassulacea / Rustica" },
+            { name: "Sedum spurium", type: "Crassulacea / Coprente" },
+            { name: "Sedum reflexum", type: "Crassulacea / Resistente" }
+        ],
+        leggera: [
+            { name: "Stipa tenuissima", type: "Graminacea Matrix / Portamento leggero" },
+            { name: "Allium sphaerocephalon", type: "Geofita / Accento sferico" },
+            { name: "Achillea millefolium", type: "Erbacea Perenne / Rustica" },
+            { name: "Dianthus carthusianorum", type: "Erbacea Perenne / Fioritura" }
+        ],
+        complessa: [
+            { name: "Pennisetum alopecuroides", type: "Graminacea Strutturale / Profonda" },
+            { name: "Eryngium amethystinum", type: "Erbacea Perenne / Aspetto Naturalistico" },
+            { name: "Salvia nemorosa 'Caradonna'", type: "Erbacea Perenne / Fioritura Verticale" },
+            { name: "Echinacea purpurea", type: "Erbacea Perenne / Accento Biofilo" }
+        ]
+    };
+
+    function onSystemChange() {
+        const system = document.getElementById("systemSelect").value;
+        const config = systemConfigs[system];
+        
+        const slider = document.getElementById("thicknessSlider");
+        slider.min = config.minThick;
+        slider.max = config.maxThick;
+        slider.value = config.defaultThick;
+        
+        document.getElementById("thicknessValue").innerText = config.defaultThick + " cm";
+        updateSimulation();
+    }
+
+    function onThicknessChange() {
+        const val = document.getElementById("thicknessSlider").value;
+        document.getElementById("thicknessValue").innerText = val + " cm";
+        updateSimulation();
+    }
+
+    function updateSimulation() {
+        const system = document.getElementById("systemSelect").value;
+        const thickness = parseInt(document.getElementById("thicknessSlider").value);
+        const palette = document.getElementById("paletteSelect").value;
+
+        let compatibility = "Alta";
+        let justification = "";
+        let colorVar = "var(--status-high)";
+
+        // Compatibility Logic Matrix
+        if (system === "standard") {
+            if (palette === "sedum") {
+                compatibility = "Alta";
+                justification = "Configurazione ottimale per sistemi estensivi classici. Il genere Sedum prospera in soli 8-12 cm di spessore minerale anche in assenza di linee irrigue fisse, grazie al metabolismo CAM.";
+            } else if (palette === "leggera") {
+                if (thickness >= 14) {
+                    compatibility = "Media";
+                    justification = "Compatibilità condizionata dallo spessore. La presenza di graminacee come la Stipa richiede volumi minimi di radicazione e sconta un elevato rischio di stress idrico ed ingiallimento nei mesi estivi mediterranei senza apporti idrici ausiliari.";
+                } else {
+                    compatibility = "Bassa";
+                    justification = "Rischio critico di fallimento biologico. Lo spessore ridotto unito all'assenza totale di irrigazione compromette la sopravvivenza delle perenni e delle graminacee superficiali durante il picco termico estivo.";
+                    colorVar = "var(--status-low)";
+                }
+            } else if (palette === "complessa") {
+                compatibility = "Bassa";
+                justification = "Incompatibilità tecnologica e biologica radicale. Il modello New Perennial complesso richiede apparati radicali profondi ed apporti idrici costanti che il sistema estensivo standard non può garantire, portando alla morte precoce dei taxa selezionati.";
+                colorVar = "var(--status-low)";
+            }
+        } else if (system === "irriga") {
+            if (palette === "sedum") {
+                compatibility = "Alta";
+                justification = "Compatibilità totale, sebbene il sistema sia tecnologicamente sovradimensionato per il solo Sedum. Ottima vigoria della vegetazione e azzeramento dei periodi di latenza indotti dalla siccità.";
+            } else if (palette === "leggera") {
+                if (thickness >= 12) {
+                    compatibility = "Alta";
+                    justification = "Sinergia perfetta (Combinazione consigliata). La sub-irrigazione capillare Daku previene la chiusura stomatica delle perenni e sostiene la matrice di graminacee (Stipa) mantenendo spessori e pesi ridotti sul solaio storico.";
+                } else {
+                    compatibility = "Media";
+                    justification = "Compatibilità moderata. I camini idrici capillari compensano la scarsità d'acqua, ma uno spessore inferiore a 12 cm limita fisicamente lo sviluppo fascicolato delle radici delle graminacee ornamentali.";
+                    colorVar = "var(--status-medium)";
+                }
+            } else if (palette === "complessa") {
+                if (thickness >= 16) {
+                    compatibility = "Media";
+                    justification = "Fattibile con riserve. La sub-irrigazione agevola lo sviluppo vegetativo, ma l'architettura radicale profonda del New Perennial esigerebbe un orizzonte colturale (Roof Soil) più profondo per esprimere la massima maturità estetica.";
+                    colorVar = "var(--status-medium)";
+                } else {
+                    compatibility = "Bassa";
+                    justification = "Sconsigliato. Nonostante l'efficacia della riserva idrica capillare dal basso, lo spessore del substrato risulta insufficiente a garantire l'ancoraggio e la stabilità meccanica delle perenni a sviluppo verticale.";
+                    colorVar = "var(--status-low)";
+                }
+            }
+        } else if (system === "semi") {
+            if (palette === "sedum") {
+                compatibility = "Alta";
+                justification = "Fattibile, ma sconsigliato sotto il profilo dell'efficienza dei costi e dei pesi. Il Sedum non necessita di un pacchetto così profondo e ricco di sostanza organica.";
+            } else if (palette === "leggera") {
+                compatibility = "Alta";
+                justification = "Compatibilità totale. Le specie perenni e le graminacee trovano un volume di terreno ideale e l'irrigazione tradizionale supporta pienamente l'accrescimento biologico del prato ornamentale.";
+            } else if (palette === "complessa") {
+                if (thickness >= 22) {
+                    compatibility = "Alta";
+                    justification = "Configurazione eccellente per giardini a prateria in quota. Lo spessore superiore a 20 cm e l'irrigazione programmata consentono l'insediamento di una comunità biotica matura, stratificata e ad altissimo valore ecosistemico.";
+                } else {
+                    compatibility = "Media";
+                    justification = "Compatibilità accettabile. Lo spessore ridotto per lo standard semi-intensivo limita l'espressione di alcune essenze macro-terme o a fittone profondo, pur garantendo la sopravvivenza generale.";
+                    colorVar = "var(--status-medium)";
+                }
+            }
+        }
+
+        if (compatibility === "Media" && colorVar !== "var(--status-low)") {
+            colorVar = "var(--status-medium)";
+        }
+
+        // Update Status Box
+        const statusBadge = document.getElementById("statusBadge");
+        statusBadge.innerText = compatibility;
+        statusBadge.style.backgroundColor = colorVar;
+        document.getElementById("statusBox").style.borderLeftColor = colorVar;
+        document.getElementById("statusText").innerText = justification;
+
+        // Calculate Performance Metrics
+        let peso = 0;
+        let ritenzione = 0;
+        let uhi = "Basso";
+        let uhiPct = 25;
+        let bio = 2;
+
+        if (system === "standard") {
+            peso = 100 + (thickness - 8) * 11;
+            ritenzione = Math.min(65, 50 + (thickness - 8) * 1.2);
+            if (palette === "sedum") { uhi = "Basso"; uhiPct = 30; bio = 2; }
+            else if (palette === "leggera") { uhi = "Moderato"; uhiPct = 50; bio = 5; }
+            else { uhi = "Critico (Morte)"; uhiPct = 10; bio = 1; }
+        } else if (system === "irriga") {
+            peso = 115 + (thickness - 8) * 11;
+            ritenzione = Math.min(80, 65 + (thickness - 8) * 1.0);
+            if (palette === "sedum") { uhi = "Moderato-Alto"; uhiPct = 65; bio = 3; }
+            else if (palette === "leggera") { uhi = "Alto"; uhiPct = 85; bio = 7; }
+            else { uhi = "Massimo (Se stabile)"; uhiPct = 90; bio = 8; }
+        } else if (system === "semi") {
+            peso = 180 + (thickness - 12) * 13;
+            ritenzione = Math.min(95, 78 + (thickness - 12) * 0.9);
+            if (palette === "sedum") { uhi = "Moderato"; uhiPct = 55; bio = 3; }
+            else if (palette === "leggera") { uhi = "Alto"; uhiPct = 85; bio = 7; }
+            else { uhi = "Massimo"; uhiPct = 98; bio = 9; }
+        }
+
+        // Output Update
+        document.getElementById("weightValue").innerText = peso + " kg/m²";
+        const weightMax = 450; 
+        const weightPct = Math.min(100, (peso / weightMax) * 100);
+        document.getElementById("weightBar").style.width = weightPct + "%";
+        // Dynamic weight color warning
+        document.getElementById("weightBar").style.backgroundColor = peso > 130 ? "var(--status-medium)" : "var(--accent-blue)";
+        if (peso > 220) document.getElementById("weightBar").style.backgroundColor = "var(--status-low)";
+
+        document.getElementById("waterValue").innerText = Math.round(ritenzione) + "%";
+        document.getElementById("waterBar").style.width = ritenzione + "%";
+
+        document.getElementById("uhiValue").innerText = uhi;
+        document.getElementById("uhiBar").style.width = uhiPct + "%";
+
+        document.getElementById("bioValue").innerText = bio + "/10";
+        document.getElementById("bioBar").style.width = (bio * 10) + "%";
+
+        // Update Botanical list
+        const listContainer = document.getElementById("botanicalList");
+        listContainer.innerHTML = "";
+        speciesDatabase[palette].forEach(sp => {
+            const li = document.createElement("li");
+            li.className = "botanical-item";
+            li.innerHTML = `<span class="botanical-name">${sp.name}</span><span class="botanical-type">${sp.type}</span>`;
+            listContainer.appendChild(li);
+        });
+    }
+
+    // Initialize on load
+    window.onload = function() {
+        updateSimulation();
+    };
+</script>
+
+</body>
+</html>
